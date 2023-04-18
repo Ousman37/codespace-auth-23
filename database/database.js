@@ -1,20 +1,21 @@
-const mongoose = require("mongoose")
+// database.js
 
+const mongoose = require('mongoose');
 
-const MONGODB_URL = process.env
-
+const MONGODB_URL = process.env.MONGODB_URL || 'mongodb://localhost/myapp';
 
 exports.connect = () => {
   mongoose.connect(MONGODB_URL, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex: true, // add this to enable index creation
+    useFindAndModify: false // add this to disable deprecated find and modify methods
   })
     .then(() => {
-      console.log('DB connection successful');
+      console.log('MongoDB connected successfully');
     })
     .catch((error) => {
-      console.log(`DB connection FAILED`);
-      console.log(error);
+      console.log(`MongoDB connection error: ${error}`);
       process.exit(1);
     });
 };
